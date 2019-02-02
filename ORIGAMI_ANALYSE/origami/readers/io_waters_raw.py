@@ -26,7 +26,7 @@ from ctypes import cdll, c_float, byref
 from toolbox import strictly_increasing
 from processing.spectra import get_linearization_range, bin_1D, linearize
 from gui_elements.misc_dialogs import dlgBox
-from io_utils import clean_up
+from .io_utils import clean_up
 
 # Load C library
 # mlLib = cdll.LoadLibrary(os.path.join(os.getcwd(), "readers\MassLynxRaw.dll"))
@@ -449,7 +449,7 @@ def rawMassLynx_MS_bin(filename=None, startScan=0, endScan=-1, function=1,
         else:
             msDict[scan] = [msX, msY]
     tend = time.clock()
-    print("It took {:.4f} seconds to process {} scans".format((tend - tstart), len(msRange)))
+    print(("It took {:.4f} seconds to process {} scans".format((tend - tstart), len(msRange))))
     
     # Return data
     return msDict

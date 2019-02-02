@@ -17,7 +17,7 @@
 # -------------------------------------------------------------------------
 # __author__ lukasz.g.migas
 
-from icons import IconContainer as icons
+from .icons import IconContainer as icons
 
 class OrigamiHelp:
     def __init__(self):

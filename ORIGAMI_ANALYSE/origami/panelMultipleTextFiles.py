@@ -25,16 +25,16 @@ from os.path import split
 from copy import deepcopy
 from natsort import natsorted
 
-from ids import *
-import dialogs as dialogs
-from dialogs import panelSelectDocument, panelAsk
-from gui_elements.panel_modifyTextSettings import panelModifyTextSettings
-from toolbox import (isempty, str2num, str2int, removeListDuplicates, convertRGB1to255,
+from .ids import *
+from . import dialogs as dialogs
+from .dialogs import panelSelectDocument, panelAsk
+from .gui_elements.panel_modifyTextSettings import panelModifyTextSettings
+from .toolbox import (isempty, str2num, str2int, removeListDuplicates, convertRGB1to255,
                              convertRGB255to1, literal_eval, randomIntegerGenerator,
                              merge_two_dicts, getTime, randomColorGenerator,
                              determineFontColor, roundRGB)
-from styles import makeMenuItem
-from document import document as documents
+from .styles import makeMenuItem
+from .document import document as documents
 
 
 class panelMultipleTextFiles (wx.Panel):
@@ -877,7 +877,7 @@ class panelMultipleTextFiles (wx.Panel):
             itemInfo = self.OnGetItemInformation(currentItems)
             fileInTable = itemInfo['document']
             if fileInTable == fileName:
-                print('File ' + fileInTable + ' already in the table')
+                print(('File ' + fileInTable + ' already in the table'))
                 currentItems = 0
                 return True
             else:
@@ -1122,7 +1122,7 @@ class panelMultipleTextFiles (wx.Panel):
             dlg.Destroy()
 
             # Retrieve custom colors
-            for i in xrange(len(self.config.customColors)):
+            for i in range(len(self.config.customColors)):
                 self.config.customColors[i] = data.GetCustomColour(i)
 
             return convertRGB255to1(newColour)
@@ -1156,7 +1156,7 @@ class panelMultipleTextFiles (wx.Panel):
             self.filelist.SetItemBackgroundColour(self.currentItem, newColour)
             self.filelist.SetItemTextColour(self.currentItem, determineFontColor(newColour, return_rgb=True))
             # Retrieve custom colors
-            for i in xrange(len(self.config.customColors)):
+            for i in range(len(self.config.customColors)):
                 self.config.customColors[i] = data.GetCustomColour(i)
 
             # update document
@@ -1301,7 +1301,7 @@ class panelMultipleTextFiles (wx.Panel):
         """
         count = self.filelist.GetItemCount()
         color_list = []
-        for row in xrange(count):
+        for row in range(count):
             color_list.append(self.filelist.GetItemBackgroundColour(item=row))
 
         if new_color in color_list:

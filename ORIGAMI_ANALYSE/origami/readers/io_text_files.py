@@ -77,7 +77,7 @@ def text_heatmap_open(path=None, normalize=None): # textOpen2DIMSdata
     
     # Get xvalues
     xvals = df.columns.tolist()
-    XaxisLabels = map(float, remove_non_digits_from_list(xvals))
+    XaxisLabels = list(map(float, remove_non_digits_from_list(xvals)))
     
     # Remove NaNs
     df.dropna(axis=1, how="all", inplace=True) # remove entire column that has NaNs
@@ -93,10 +93,10 @@ def text_heatmap_open(path=None, normalize=None): # textOpen2DIMSdata
         XaxisLabels[0] == 0):
         XaxisLabels = XaxisLabels[1::]
     
-    print('Labels size: {} x {} Array size: {} x {}'.format(len(XaxisLabels),
+    print(('Labels size: {} x {} Array size: {} x {}'.format(len(XaxisLabels),
                                                             len(YaxisLabels), 
                                                             len(imsDataText[0, :]), 
-                                                            len(imsDataText[:, 0])))
+                                                            len(imsDataText[:, 0]))))
 
     if normalize:
         imsDataTextNorm = normalize(imsDataText, axis=0, norm='max')  # Norm to 1 

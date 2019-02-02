@@ -62,7 +62,7 @@ class mzMLreader():
 
     def get_n_scans(self, n_scans):
         data = OrderedDict()
-        for scan in xrange(n_scans):
+        for scan in range(n_scans):
             try: 
                 spectrum = next(self.source)
             except StopIteration:

@@ -18,32 +18,32 @@
 # __author__ lukasz.g.migas
 
 # Load libraries 
-from __future__ import division
+
 
 # Load modules
-from panelPlot import panelPlot
-from panelMultipleIons import panelMultipleIons
-from panelMultipleTextFiles import panelMultipleTextFiles
-from panelMultipleML import panelMML
-from panelDocumentTree import panelDocuments
-from panelLinearDriftCell import panelLinearDriftCell
-from panelCCScalibration import panelCCScalibration
-from gui_elements.panelAbout import panelAbout
-from panelExtraParameters import panelParametersEdit
-from panelProcess import panelProcessData
-import dialogs as dialogs
-from dialogs import (panelExportSettings, panelSequenceAnalysis, panelNotifyOpenDocuments,
+from .panelPlot import panelPlot
+from .panelMultipleIons import panelMultipleIons
+from .panelMultipleTextFiles import panelMultipleTextFiles
+from .panelMultipleML import panelMML
+from .panelDocumentTree import panelDocuments
+from .panelLinearDriftCell import panelLinearDriftCell
+from .panelCCScalibration import panelCCScalibration
+from .gui_elements.panelAbout import panelAbout
+from .panelExtraParameters import panelParametersEdit
+from .panelProcess import panelProcessData
+from . import dialogs as dialogs
+from .dialogs import (panelExportSettings, panelSequenceAnalysis, panelNotifyOpenDocuments,
                              panelNotifyNewVersion, panelHTMLViewer)
-from panelInteractiveOutput import panelInteractiveOutput as panelInteractive
-from panelLog import panelLog
+from .panelInteractiveOutput import panelInteractiveOutput as panelInteractive
+from .panelLog import panelLog
 
-from ids import *
-from toolbox import (findPeakMax, getNarrow1Ddata, randomIntegerGenerator,
+from .ids import *
+from .toolbox import (findPeakMax, getNarrow1Ddata, randomIntegerGenerator,
                              convertRGB255to1, convertRGB1to255, clean_directory,
                              checkVersion, compareVersions)
-from styles import makeMenuItem
-from readers.io_text_files import check_file_type
-from processing.data_processing import data_processing
+from .styles import makeMenuItem
+from .readers.io_text_files import check_file_type
+from .processing.data_processing import data_processing
 
 import wx, os, wx.aui, psutil, sys, webbrowser
 from time import gmtime, strftime, sleep
@@ -887,13 +887,13 @@ class MyFrame(wx.Frame):
         
         
     def on_customise_annotation_plot_parameters(self, evt):
-        from gui_elements.dialog_customiseUserAnnotations import panelCustomiseParameters as panelCustomiseParameters_annotations
+        from .gui_elements.dialog_customiseUserAnnotations import panelCustomiseParameters as panelCustomiseParameters_annotations
         
         dlg = panelCustomiseParameters_annotations(self,  self.config)
         dlg.ShowModal()
         
     def on_customise_unidec_plot_parameters(self, evt):
-        from gui_elements.dialog_customiseUniDecPlots import panelCustomiseParameters as panelCustomiseParameters_unidec
+        from .gui_elements.dialog_customiseUniDecPlots import panelCustomiseParameters as panelCustomiseParameters_unidec
         
         dlg = panelCustomiseParameters_unidec(self,  self.config, self.icons)
         dlg.ShowModal()
@@ -1049,7 +1049,7 @@ class MyFrame(wx.Frame):
         except: pass
         
     def on_open_HTML_guide(self, evt):
-        from help import HTMLHelp as htmlPages
+        from .help import HTMLHelp as htmlPages
         
         htmlPages = htmlPages()
         evtID = evt.GetId()
@@ -1058,26 +1058,26 @@ class MyFrame(wx.Frame):
             kwargs = htmlPages.page_UniDec_info
             
         elif evtID == ID_help_page_dataLoading:
-            link = os.path.join(os.getcwd(), "docs\user-guide\loading-data.html")
+            link = os.path.join(os.getcwd(), "docs\\user-guide\loading-data.html")
             #kwargs = htmlPages.page_data_loading_info
             
         elif evtID == ID_help_page_gettingStarted:
-            link = os.path.join(os.getcwd(), "docs\user-guide\example-files.html")
+            link = os.path.join(os.getcwd(), "docs\\user-guide\example-files.html")
             #kwargs = htmlPages.page_data_getting_started
             
         elif evtID == ID_help_page_UniDec:
-            link = os.path.join(os.getcwd(), "docs\user-guide\deconvolution\unidec-deconvolution.html")
+            link = os.path.join(os.getcwd(), "docs\\user-guide\deconvolution\\unidec-deconvolution.html")
             #kwargs = htmlPages.page_deconvolution_info
             
         elif evtID == ID_help_page_ORIGAMI:
-            link = os.path.join(os.getcwd(), "docs\user-guide\data-handling\automated-ciu.html")
+            link = os.path.join(os.getcwd(), "docs\\user-guide\data-handling\automated-ciu.html")
             #kwargs = htmlPages.page_origami_info
             
         elif evtID == ID_help_page_overlay:
             kwargs = htmlPages.page_overlay_info
             
         elif evtID == ID_help_page_multipleFiles:
-            link = os.path.join(os.getcwd(), "docs\user-guide\data-handling\manual-ciu.html")
+            link = os.path.join(os.getcwd(), "docs\\user-guide\data-handling\manual-ciu.html")
             #kwargs = htmlPages.page_multiple_files_info
             
         elif evtID == ID_help_page_linearDT:
@@ -1087,11 +1087,11 @@ class MyFrame(wx.Frame):
             kwargs = htmlPages.page_ccs_calibration_info
             
         elif evtID == ID_help_page_dataExtraction:
-            link = os.path.join(os.getcwd(), "docs\user-guide\data-handling\ms-and-imms-files.html")
+            link = os.path.join(os.getcwd(), "docs\\user-guide\data-handling\ms-and-imms-files.html")
             # kwargs = htmlPages.page_data_extraction_info
             
         elif evtID == ID_help_page_Interactive:
-            link = os.path.join(os.getcwd(), "docs\user-guide\interactive-output\simple-output.html")
+            link = os.path.join(os.getcwd(), "docs\\user-guide\interactive-output\simple-output.html")
             #kwargs = htmlPages.page_interactive_output_info
             
         elif evtID == ID_help_page_OtherData:
@@ -1596,7 +1596,7 @@ class MyFrame(wx.Frame):
         try:
             for title in self.presenter.documentsDict:
                 del self.presenter.documentsDict[title]
-                print("Deleted {}".format(title))
+                print(("Deleted {}".format(title)))
         except:
             pass
             
@@ -1604,7 +1604,7 @@ class MyFrame(wx.Frame):
         try:
             if self.config.temporary_data is not None:
                 clean_directory(self.config.temporary_data)
-                print("Cleared {} from temporary files.".format(self.config.temporary_data))
+                print(("Cleared {} from temporary files.".format(self.config.temporary_data)))
         except Exception as err:
             print(err)
             pass
@@ -1651,20 +1651,20 @@ class MyFrame(wx.Frame):
                 mass = (xpos+charge)*charge
                 # If inside a plot area with MS, give out charge state
                 if self.mode == 'Measure' and self.panelPlots.currentPage in ["MS",  "DT/MS"]:
-                    self.SetStatusText(u"m/z=%.2f int=%.2f Δm/z=%.2f z=%.1f mw=%.1f" % (xpos, ypos, range, charge, mass), number=0)
+                    self.SetStatusText("m/z=%.2f int=%.2f Δm/z=%.2f z=%.1f mw=%.1f" % (xpos, ypos, range, charge, mass), number=0)
                 else:
                     if self.panelPlots.currentPage in ['MS']:
-                        self.SetStatusText(u"m/z=%.4f int=%.4f Δm/z=%.2f" % (xpos, ypos, range), number=0)
+                        self.SetStatusText("m/z=%.4f int=%.4f Δm/z=%.2f" % (xpos, ypos, range), number=0)
                     elif  self.panelPlots.currentPage in ['DT/MS']:
-                        self.SetStatusText(u"m/z=%.4f dt=%.4f Δm/z=%.2f" % (xpos, ypos, range), number=0)
+                        self.SetStatusText("m/z=%.4f dt=%.4f Δm/z=%.2f" % (xpos, ypos, range), number=0)
                     elif self.panelPlots.currentPage in ['RT']:
-                        self.SetStatusText(u"scan=%.0f int=%.4f Δscans=%.2f" % (xpos, ypos, range), number=0)
+                        self.SetStatusText("scan=%.0f int=%.4f Δscans=%.2f" % (xpos, ypos, range), number=0)
                     elif self.panelPlots.currentPage in ['1D']:
-                        self.SetStatusText(u"dt=%.2f int=%.4f Δdt=%.2f" % (xpos, ypos, range), number=0)
+                        self.SetStatusText("dt=%.2f int=%.4f Δdt=%.2f" % (xpos, ypos, range), number=0)
                     elif self.panelPlots.currentPage in ['2D']:
-                        self.SetStatusText(u"x=%.4f dt=%.4f Δx=%.2f" % (xpos, ypos, range), number=0)
+                        self.SetStatusText("x=%.4f dt=%.4f Δx=%.2f" % (xpos, ypos, range), number=0)
                     else:
-                        self.SetStatusText(u"x=%.4f y=%.4f Δx=%.2f" % (xpos, ypos, range), number=0)
+                        self.SetStatusText("x=%.4f y=%.4f Δx=%.2f" % (xpos, ypos, range), number=0)
             else:
                 if self.panelPlots.currentPage in ['MS']:
                     self.SetStatusText("m/z=%.4f int=%.4f" % (xpos, ypos), number=0)
@@ -2049,7 +2049,7 @@ class MyFrame(wx.Frame):
                                                      self.icons,
                                                      **kwargs)
             self.panelProcessData.Show()
-        except (ValueError, AttributeError, TypeError, KeyError, wx._core.PyAssertionError), e:
+        except (ValueError, AttributeError, TypeError, KeyError, wx._core.PyAssertionError) as e:
             self.config.processParamsWindow_on_off = False
             dialogs.dlgBox(exceptionTitle='Failed to open panel', 
                            exceptionMsg= str(e),
@@ -2078,7 +2078,7 @@ class MyFrame(wx.Frame):
                                                              self.icons, 
                                                              **kwargs)
             self.panelImportExportParameters.Show()
-        except (ValueError, AttributeError, TypeError, KeyError), e:
+        except (ValueError, AttributeError, TypeError, KeyError) as e:
             self.config.importExportParamsWindow_on_off = False
             dialogs.dlgBox(exceptionTitle='Failed to open panel', 
                            exceptionMsg= str(e),
@@ -2106,7 +2106,7 @@ class MyFrame(wx.Frame):
             self.config.interactiveParamsWindow_on_off = True
             self.interactivePanel = panelInteractive(self, self.icons, self.presenter, self.config)
             self.interactivePanel.Show()
-        except (ValueError, AttributeError, TypeError, KeyError, NameError), e:
+        except (ValueError, AttributeError, TypeError, KeyError, NameError) as e:
             self.config.interactiveParamsWindow_on_off = False
             dialogs.dlgBox(exceptionTitle='Failed to open panel', 
                            exceptionMsg= str(e),
@@ -2258,7 +2258,7 @@ class MyFrame(wx.Frame):
         
         log_directory = os.path.join(self.config.cwd, "logs")
         if not os.path.exists(log_directory):
-            print("Directory logs did not exist - created a new one in %s" % log_directory)
+            print(("Directory logs did not exist - created a new one in %s" % log_directory))
             os.makedirs(log_directory)
 
         # Generate filename
@@ -2267,7 +2267,7 @@ class MyFrame(wx.Frame):
             self.config.loggingFile_path = os.path.join(log_directory, file_path)
             #logging.basicConfig(filename=self.config.loggingFile_path,level=logging.DEBUG)
             if self.config.logging:
-                print('\nGenerated log filename: %s' % self.config.loggingFile_path)
+                print(('\nGenerated log filename: %s' % self.config.loggingFile_path))
         
         if self.config.logging:
             sys.stdin = self.panelLog.log
@@ -2306,13 +2306,13 @@ class DragAndDrop(wx.FileDropTarget):
         the file paths themselves
         """
         for filename in filenames:
-            print("Opening {} file...".format(filename))
+            print(("Opening {} file...".format(filename)))
             __, file_extension = os.path.splitext(filename)
             if file_extension in ['.raw', '.pickle', '.pkl', '.txt', '.csv', '.tab']:
                 try:
                     self.window.onOpenFile_DnD(filename, file_extension)
                 except:
-                    print("Failed to open {}".format(filename))
+                    print(("Failed to open {}".format(filename)))
                     continue
             else:
                 print("Dropped file is not supported")

@@ -1,13 +1,13 @@
 __author__ = 'Lukasz.Migas'
 
 
-import activation
-from activation import *
-import heatmap
-from heatmap import *
-import origami_ms
-from origami_ms import *
-import spectra
-from spectra import *
-import utils
-from utils import *
+from . import activation
+from .activation import *
+from . import heatmap
+from .heatmap import *
+from . import origami_ms
+from .origami_ms import *
+from . import spectra
+from .spectra import *
+from . import utils
+from .utils import *

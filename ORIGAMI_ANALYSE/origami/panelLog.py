@@ -18,8 +18,8 @@
 # __author__ lukasz.g.migas
 
 import wx, os
-from styles import makeMenuItem
-from ids import (ID_log_save_log, ID_log_go_to_directory, 
+from .styles import makeMenuItem
+from .ids import (ID_log_save_log, ID_log_go_to_directory, 
                  ID_log_clear_window, ID_extraSettings_logging)
 
 # import threading

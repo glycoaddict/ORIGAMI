@@ -24,7 +24,7 @@ from matplotlib.text import Text
 from wx.lib.pubsub import setupkwargs
 from wx.lib.pubsub import pub
 
-from toolbox import dir_extra
+from .toolbox import dir_extra
 
 # TODO: add dragging in the labels area - should be able to grab and drag so its easier
 #       to manipulate plot area
@@ -46,7 +46,7 @@ def GetMaxes(axes, xmin=None, xmax=None):
         try:
             yvals.append([np.amin(ydat), np.amax(ydat)])
             xvals.append([np.amin(xdat), np.amax(xdat)])
-        except Exception, e:
+        except Exception as e:
             pass
 
     for p in axes.collections:
@@ -65,7 +65,7 @@ def GetMaxes(axes, xmin=None, xmax=None):
         try:
             yvals.append([np.amin(ydat), np.amax(ydat)])
             xvals.append([np.amin(xdat), np.amax(xdat)])
-        except Exception, e:
+        except Exception as e:
             pass
 
     for patch in axes.patches:
@@ -82,9 +82,9 @@ def GetMaxes(axes, xmin=None, xmax=None):
                     try:
                         yvals.append([np.amin(ydat), np.amax(ydat)])
                         xvals.append([np.amin(xdat), np.amax(xdat)])
-                    except Exception, e:
+                    except Exception as e:
                         pass
-        except Exception, e:
+        except Exception as e:
             try:
                 xys = patch.xy
                 ydat = xys[:, 1]
@@ -95,7 +95,7 @@ def GetMaxes(axes, xmin=None, xmax=None):
 
                 yvals.append([np.amin(ydat), np.amax(ydat)])
                 xvals.append([np.amin(xdat), np.amax(xdat)])
-            except Exception, e:
+            except Exception as e:
                 pass
 
     for t in axes.texts:
@@ -648,8 +648,8 @@ class ZoomBox:
     
         yvals = np.asarray(yvals)
         yscaler, expo = xy_range_divider(values=yvals)
-        print(yscaler, expo)
-        print(yvals*yscaler)
+        print((yscaler, expo))
+        print((yvals*yscaler))
         
         for axes in self.axes:
             axes.set_yticklabels(yvals*yscaler)
@@ -878,14 +878,14 @@ class ZoomBox:
         #       the last values
         try:
             y0, y1 = evt.inaxes.get_ylim()
-        except Exception, __:
+        except Exception as __:
             for axes in self.axes:
                 y0, y1 = axes.get_ylim()
             
         # new
         try:
             x0, x1 = evt.inaxes.get_xlim()
-        except Exception, __:
+        except Exception as __:
             for axes in self.axes:
                 x0, x1 = axes.get_xlim()
 

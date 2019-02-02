@@ -27,13 +27,13 @@ from time import time as ttime
 from natsort import natsorted
 from re import split as re_split
 
-from dialogs import dlgBox, EditableListCtrl, panelAsk, panelSelectDocument
-from toolbox import (str2num, str2int, convertRGB1to255, convertRGB255to1,
+from .dialogs import dlgBox, EditableListCtrl, panelAsk, panelSelectDocument
+from .toolbox import (str2num, str2int, convertRGB1to255, convertRGB255to1,
                              dir_extra, find_nearest, merge_two_dicts,
                              checkExtension, _replace_labels)
-from styles import makeToggleBtn, makeMenuItem, makeCheckbox, validator
-from help import OrigamiHelp as help
-from ids import (ID_annotPanel_assignColor_selected, ID_annotPanel_assignChargeState_selected,
+from .styles import makeToggleBtn, makeMenuItem, makeCheckbox, validator
+from .help import OrigamiHelp as help
+from .ids import (ID_annotPanel_assignColor_selected, ID_annotPanel_assignChargeState_selected,
                          ID_annotPanel_deleteSelected_selected, ID_annotPanel_addAnnotations, 
                          ID_annotPanel_assignLabel_selected, ID_annotPanel_savePeakList_selected,
                          ID_annotPanel_show_charge, ID_annotPanel_show_label, 
@@ -41,8 +41,8 @@ from ids import (ID_annotPanel_assignColor_selected, ID_annotPanel_assignChargeS
                          ID_annotPanel_show_adjustLabelPosition, ID_annotPanel_show_mzAndIntensity,
                          ID_annotPanel_otherSettings, ID_annotPanel_multipleAnnotation
                          )
-import processing.utils as pr_utils
-from gui_elements.dialog_customiseUserAnnotations import panelCustomiseParameters
+from . import processing.utils as pr_utils
+from .gui_elements.dialog_customiseUserAnnotations import panelCustomiseParameters
 
 
 class panelAnnotatePeaks(wx.MiniFrame):
@@ -115,7 +115,7 @@ class panelAnnotatePeaks(wx.MiniFrame):
         except: 
             pass
         
-        print("Startup took {:.3f} seconds".format(ttime()-tstart))
+        print(("Startup took {:.3f} seconds".format(ttime()-tstart)))
     # ----
     
     def OnKey(self, evt):
@@ -159,15 +159,15 @@ class panelAnnotatePeaks(wx.MiniFrame):
                                 'arrow':8}
         
         self.peaklist = EditableListCtrl(panel, style=wx.LC_REPORT|wx.LC_VRULES|wx.LC_SINGLE_SEL)
-        self.peaklist.InsertColumn(self.annotation_list['check'],u'', width=25)
-        self.peaklist.InsertColumn(self.annotation_list['min'],u'min band', width=75)
-        self.peaklist.InsertColumn(self.annotation_list['max'],u'max band', width=75)
-        self.peaklist.InsertColumn(self.annotation_list['position'],u'value (x)', width=75)
-        self.peaklist.InsertColumn(self.annotation_list['intensity'],u'value (y)', width=75)
-        self.peaklist.InsertColumn(self.annotation_list['charge'],u'charge', width=50)
-        self.peaklist.InsertColumn(self.annotation_list['label'],u'label', width=100)
-        self.peaklist.InsertColumn(self.annotation_list['color'],u'color', width=107)
-        self.peaklist.InsertColumn(self.annotation_list['arrow'],u'show arrow', width=75)
+        self.peaklist.InsertColumn(self.annotation_list['check'],'', width=25)
+        self.peaklist.InsertColumn(self.annotation_list['min'],'min band', width=75)
+        self.peaklist.InsertColumn(self.annotation_list['max'],'max band', width=75)
+        self.peaklist.InsertColumn(self.annotation_list['position'],'value (x)', width=75)
+        self.peaklist.InsertColumn(self.annotation_list['intensity'],'value (y)', width=75)
+        self.peaklist.InsertColumn(self.annotation_list['charge'],'charge', width=50)
+        self.peaklist.InsertColumn(self.annotation_list['label'],'label', width=100)
+        self.peaklist.InsertColumn(self.annotation_list['color'],'color', width=107)
+        self.peaklist.InsertColumn(self.annotation_list['arrow'],'show arrow', width=75)
         
         self.peaklist.Bind(wx.EVT_LIST_COL_CLICK, self.OnGetColumnClick)
         
@@ -180,46 +180,46 @@ class panelAnnotatePeaks(wx.MiniFrame):
         self.makePeaklist(panel)
         
         # make editor
-        min_label = wx.StaticText(panel, -1, u"min band (x):")
+        min_label = wx.StaticText(panel, -1, "min band (x):")
         self.min_value = wx.TextCtrl(panel, -1, "", validator=validator('float'))
         
-        max_label = wx.StaticText(panel, -1, u"max band (x):")
+        max_label = wx.StaticText(panel, -1, "max band (x):")
         self.max_value = wx.TextCtrl(panel, -1, "", validator=validator('float'))
         
         
-        charge_label = wx.StaticText(panel, -1, u"charge:")
+        charge_label = wx.StaticText(panel, -1, "charge:")
         self.charge_value = wx.TextCtrl(panel, -1, "", validator=validator('int'))
         
-        label_label = wx.StaticText(panel, -1, u"label:")
+        label_label = wx.StaticText(panel, -1, "label:")
         self.label_value = wx.TextCtrl(panel, -1, "", style=wx.TE_RICH2)
          
-        color_label = wx.StaticText(panel, -1, u"color:")
+        color_label = wx.StaticText(panel, -1, "color:")
         self.colorBtn = wx.Button(panel, wx.ID_ANY,
-                                  u"", wx.DefaultPosition, 
+                                  "", wx.DefaultPosition, 
                                   wx.Size( 26, 26 ), 0)
         self.colorBtn.SetBackgroundColour(convertRGB1to255(self.config.interactive_ms_annotations_color))
         self.colorBtn.Bind(wx.EVT_BUTTON, self.onChangeColour)
 
-        label_format = wx.StaticText(panel, -1, u"format:")
+        label_format = wx.StaticText(panel, -1, "format:")
         self.label_format = wx.ComboBox(panel, -1, choices=["None", "charge-only [n+]", "charge-only [+n]", "superscript", "M+nH", "2M+nH", "3M+nH", "4M+nH"], 
                                         value="None", style=wx.CB_READONLY, size=(-1, -1))
 
-        intensity_label = wx.StaticText(panel, -1, u"value (y):")
+        intensity_label = wx.StaticText(panel, -1, "value (y):")
         self.intensity_value = wx.TextCtrl(panel, -1, "", validator=validator('float'))
         self.intensity_value.SetToolTip(wx.ToolTip("Value (y) could represent intensity of an ion in a mass spectrum."))
 
-        position_label = wx.StaticText(panel, -1, u"value (x):")
+        position_label = wx.StaticText(panel, -1, "value (x):")
         self.position_value = wx.TextCtrl(panel, -1, "", validator=validator('float'))
         self.position_value.SetToolTip(wx.ToolTip("Value (x) could represent m/z of an ion in a mass spectrum."))
         
-        position_x_label = wx.StaticText(panel, -1, u"label position (x):")
+        position_x_label = wx.StaticText(panel, -1, "label position (x):")
         self.position_x_value = wx.TextCtrl(panel, -1, "", validator=validator('float'))
         
-        position_y_label = wx.StaticText(panel, -1, u"label position (y):")
+        position_y_label = wx.StaticText(panel, -1, "label position (y):")
         self.position_y_value = wx.TextCtrl(panel, -1, "", validator=validator('float'))
         
-        add_arrow_to_peak = wx.StaticText(panel, -1, u"add arrow:")
-        self.add_arrow_to_peak = makeCheckbox(panel, u"")
+        add_arrow_to_peak = wx.StaticText(panel, -1, "add arrow:")
+        self.add_arrow_to_peak = makeCheckbox(panel, "")
         self.add_arrow_to_peak.SetValue(False)
         self.add_arrow_to_peak.Bind(wx.EVT_CHECKBOX, self.onAddAnnotation)
 
@@ -236,18 +236,18 @@ class panelAnnotatePeaks(wx.MiniFrame):
 #             self.markTgl.Disable()
         
         self.addBtn = wx.Button(panel, wx.ID_OK, "Add annotation", size=(-1, 22))
-        self.showBtn = wx.Button(panel, wx.ID_OK, u"Show ▼", size=(-1, 22))
+        self.showBtn = wx.Button(panel, wx.ID_OK, "Show ▼", size=(-1, 22))
         self.removeBtn = wx.Button(panel, wx.ID_OK, "Remove", size=(-1, 22))
         self.cancelBtn = wx.Button(panel, wx.ID_OK, "Cancel", size=(-1, 22))
-        self.actionBtn = wx.Button(panel, wx.ID_OK, u"Action ▼", size=(-1, 22))
+        self.actionBtn = wx.Button(panel, wx.ID_OK, "Action ▼", size=(-1, 22))
 
-        self.highlight_on_selection = makeCheckbox(panel, u"highlight")
+        self.highlight_on_selection = makeCheckbox(panel, "highlight")
         self.highlight_on_selection.SetValue(True)
         
-        self.zoom_on_selection = makeCheckbox(panel, u"zoom-in")
+        self.zoom_on_selection = makeCheckbox(panel, "zoom-in")
         self.zoom_on_selection.SetValue(False)
         
-        window_size = wx.StaticText(panel, wx.ID_ANY, u"window size:")
+        window_size = wx.StaticText(panel, wx.ID_ANY, "window size:")
         self.zoom_window_size = wx.SpinCtrlDouble(
             panel, -1,
                                                   value=str(5), 
@@ -334,13 +334,13 @@ class panelAnnotatePeaks(wx.MiniFrame):
             evt.Skip()
     
     def onMultiplyAnnotation(self, evt):
-        from dialogs import dlgAsk
+        from .dialogs import dlgAsk
         import copy
         
         rows = self.peaklist.GetItemCount()
         checked = []
         
-        for row in xrange(rows):
+        for row in range(rows):
             if self.peaklist.IsChecked(row):
                 checked.append(row)
                 
@@ -358,7 +358,7 @@ class panelAnnotatePeaks(wx.MiniFrame):
             annotation = self.get_annotation(min_value, max_value)
             
             # modify parameters
-            for i in xrange(n_duplicates):
+            for i in range(n_duplicates):
                 _annotation = copy.deepcopy(annotation)
                 _annotation["min"] = annotation["min"]-(0.001 * (i+1))
                 
@@ -569,7 +569,7 @@ class panelAnnotatePeaks(wx.MiniFrame):
             # iterate
             color_value = str(convertRGB255to1(self.colorBtn.GetBackgroundColour()))
             arrow = False
-            for peak in xrange(len(peaklist)):
+            for peak in range(len(peaklist)):
                 min_value = peaklist[min_name][peak]
                 max_value = peaklist[max_name][peak]
                 if position_name is not None: position = peaklist[position_name][peak]
@@ -677,7 +677,7 @@ class panelAnnotatePeaks(wx.MiniFrame):
             newColour = list(data.GetColour().Get())
             dlg.Destroy()
             # Retrieve custom colors
-            for i in xrange(15):
+            for i in range(15):
                 self.config.customColors[i] = data.GetCustomColour(i)
         else:
             return
@@ -752,7 +752,7 @@ class panelAnnotatePeaks(wx.MiniFrame):
         
         rows = self.peaklist.GetItemCount()
         
-        for row in xrange(rows):
+        for row in range(rows):
             self.peaklist.CheckItem(row, check=self.check_all)
             
     def onItemSelected(self, evt):
@@ -1052,7 +1052,7 @@ class panelAnnotatePeaks(wx.MiniFrame):
             self.peaklist.DeleteItem(index)
             name = "{} - {}".format(min_value, max_value)
             del self.kwargs['annotations'][name]
-            print("Removed {} from annotations".format(name))
+            print(("Removed {} from annotations".format(name)))
             # update annotations
             self.documentTree.onUpdateAnotations(self.kwargs['annotations'],
                                                  self.kwargs['document'],
@@ -1206,10 +1206,10 @@ class panelAnnotatePeaks(wx.MiniFrame):
         dlg.CentreOnParent()
         if dlg.ShowModal() == wx.ID_OK:
             filename = dlg.GetPath()
-            separator = wildcard_dict.keys()[wildcard_dict.values().index(dlg.GetFilterIndex())]
+            separator = list(wildcard_dict.keys())[list(wildcard_dict.values()).index(dlg.GetFilterIndex())]
             try:
                 df.to_csv(path_or_buf=filename, sep=separator)
-                print("Saved peaklist to {}".format(filename))
+                print(("Saved peaklist to {}".format(filename)))
             except IOError:
                 print("Could not save file as it is currently open in another program")
         
@@ -1238,23 +1238,23 @@ class panelAnnotatePeaks(wx.MiniFrame):
         elif return_type == "charge-only [n+]":
             return "{}+".format(s)
         elif return_type == "superscript":
-            unicode_string = u''.join(dict(zip(u"+-0123456789", u"⁺⁻⁰¹²³⁴⁵⁶⁷⁸⁹")).get(c, c) for c in s)
+            unicode_string = ''.join(dict(list(zip("+-0123456789", "⁺⁻⁰¹²³⁴⁵⁶⁷⁸⁹"))).get(c, c) for c in s)
             return unicode_string
         elif return_type == "M+nH":
-            unicode_string = u''.join(dict(zip(u"+-0123456789", u"⁺⁻⁰¹²³⁴⁵⁶⁷⁸⁹")).get(c, c) for c in s)
-            modified_label = u"[M{}H]{}".format(s, unicode_string)
+            unicode_string = ''.join(dict(list(zip("+-0123456789", "⁺⁻⁰¹²³⁴⁵⁶⁷⁸⁹"))).get(c, c) for c in s)
+            modified_label = "[M{}H]{}".format(s, unicode_string)
             return modified_label
         elif return_type == "2M+nH":
-            unicode_string = u''.join(dict(zip(u"+-0123456789", u"⁺⁻⁰¹²³⁴⁵⁶⁷⁸⁹")).get(c, c) for c in s)
-            modified_label = u"[2M{}H]{}".format(s, unicode_string)
+            unicode_string = ''.join(dict(list(zip("+-0123456789", "⁺⁻⁰¹²³⁴⁵⁶⁷⁸⁹"))).get(c, c) for c in s)
+            modified_label = "[2M{}H]{}".format(s, unicode_string)
             return modified_label
         elif return_type == "3M+nH":
-            unicode_string = u''.join(dict(zip(u"+-0123456789", u"⁺⁻⁰¹²³⁴⁵⁶⁷⁸⁹")).get(c, c) for c in s)
-            modified_label = u"[3M{}H]{}".format(s, unicode_string)
+            unicode_string = ''.join(dict(list(zip("+-0123456789", "⁺⁻⁰¹²³⁴⁵⁶⁷⁸⁹"))).get(c, c) for c in s)
+            modified_label = "[3M{}H]{}".format(s, unicode_string)
             return modified_label
         elif return_type == "4M+nH":
-            unicode_string = u''.join(dict(zip(u"+-0123456789", u"⁺⁻⁰¹²³⁴⁵⁶⁷⁸⁹")).get(c, c) for c in s)
-            modified_label = u"[4M{}H]{}".format(s, unicode_string)
+            unicode_string = ''.join(dict(list(zip("+-0123456789", "⁺⁻⁰¹²³⁴⁵⁶⁷⁸⁹"))).get(c, c) for c in s)
+            modified_label = "[4M{}H]{}".format(s, unicode_string)
             return modified_label
         else:
             return s

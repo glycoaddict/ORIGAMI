@@ -26,13 +26,13 @@ from matplotlib.figure import Figure
 import matplotlib.patches as patches
 from mpl_toolkits.mplot3d import Axes3D
 
-from ZoomBox import ZoomBox, GetXValues
+from .ZoomBox import ZoomBox, GetXValues
 from wx.lib.pubsub import pub
 from numpy import amax, divide
 from os.path import join, splitext, basename
 from PIL import Image, ImageChops
 
-from gui_elements.misc_dialogs import dlgBox
+from .gui_elements.misc_dialogs import dlgBox
 
 
 class plottingWindow(wx.Window):

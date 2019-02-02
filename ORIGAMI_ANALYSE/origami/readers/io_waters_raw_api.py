@@ -103,7 +103,7 @@ class WatersRawReader():
             fcn = 0 
             n_scans = self.stats_in_functions[fcn]['n_scans']
             ms_DF = np.zeros((n_scans, len(self.bin_centres)))
-            msBinDict = dict.fromkeys(range(n_scans))
+            msBinDict = dict.fromkeys(list(range(n_scans)))
             
             for scan in range(self.stats_in_functions[fcn]['n_scans']):
                 yvals = self.get_scan_data(fcn, scan)
@@ -117,7 +117,7 @@ class WatersRawReader():
                 zvals_summed.append(np.sum(yvals))
                 
         
-        print(ms_DF.shape)
+        print((ms_DF.shape))
         return ms_DF, msBinDict, yvals_summed, zvals_summed
             
             

@@ -20,8 +20,8 @@
 import numpy as np
 
 from toolbox import isempty
-from heatmap import normalize_2D
-from spectra import normalize_1D
+from .heatmap import normalize_2D
+from .spectra import normalize_1D
 
 
 def compute_RMSD(inputData1 = None, inputData2 = None): # computeRMSD
